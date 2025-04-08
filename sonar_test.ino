@@ -8,23 +8,23 @@ bool error = false;
 #define DELAY 500
 
 // for servo
-#define ROT_PIN 8
-#define BASE_PIN 7
+// #define ROT_PIN 8
+// #define BASE_PIN 7
 
-#define BASE_MIN_ANGLE 0
-#define BASE_MAX_ANGLE 180
+// #define BASE_MIN_ANGLE 0
+// #define BASE_MAX_ANGLE 180
 
-#define DELAY 500
+// #define DELAY 500
 
-#define ROT_INIT_ANGLE 88
-#define ROT_STEP 15
-#define BASE_INIT_ANGLE 0
-#define BASE_STEP 30
+// #define ROT_INIT_ANGLE 88
+// #define ROT_STEP 15
+// #define BASE_INIT_ANGLE 0
+// #define BASE_STEP 30
 
-Servo baseServo, rotServo;
+// Servo baseServo, rotServo;
 
-int curBaseAngle = BASE_INIT_ANGLE;
-int curRotAngle = ROT_INIT_ANGLE;
+// int curBaseAngle = BASE_INIT_ANGLE;
+// int curRotAngle = ROT_INIT_ANGLE;
 
 #define TRIG_PIN1 13
 #define ECHO_PIN1 12
@@ -87,25 +87,25 @@ void loop()
 {
     // rotServo.write(ROT_INIT_ANGLE);
     // commonDelay();
-    rotServo.write(ROT_INIT_ANGLE - ROT_STEP);
-    commonDelay();
-    float frontDist = getDist(1);
+    // rotServo.write(ROT_INIT_ANGLE - ROT_STEP);
+    // commonDelay();
+    // float frontDist = getDist(1);
 
-    rotServo.write(ROT_INIT_ANGLE);
-    commonDelay();
-    rotServo.write(ROT_INIT_ANGLE + ROT_STEP);
-    commonDelay();
-    float backDist = getDist(2);
+    // rotServo.write(ROT_INIT_ANGLE);
+    // commonDelay();
+    // rotServo.write(ROT_INIT_ANGLE + ROT_STEP);
+    // commonDelay();
+    // float backDist = getDist(2);
 
-    rotServo.write(ROT_INIT_ANGLE);
+    // rotServo.write(ROT_INIT_ANGLE);
 
-    Serial.print("Sensor 1 Front dist: ");
-    Serial.print(frontDist);
-    Serial.println(" cm");
+    // Serial.print("Sensor 1 Front dist: ");
+    // Serial.print(frontDist);
+    // Serial.println(" cm");
 
-    Serial.print("Sensor 2 Front dist: ");
-    Serial.print(backDist);
-    Serial.println(" cm");
+    // Serial.print("Sensor 2 Front dist: ");
+    // Serial.print(backDist);
+    // Serial.println(" cm");
 
     float distance1 = getDist(1);
     float distance2 = getDist(2);
