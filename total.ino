@@ -33,7 +33,6 @@ int curRotAngle = ROT_INIT_ANGLE;
 
 #define CLIFF_THRESHOLD 100
 
-
 float dist[NUM_DIST]; // 0~6 : left angle, 7~13 : right angle
 float frontDist;
 float backDist;
@@ -51,7 +50,8 @@ int movingStatus = 1; // 1 : can go forward 2 : can't go forward, can go backwar
 
 #define STBY_PIN 27 // LOW : OFF Motor Driver, HIGH : ON Motor Driver
 
-#define MOTOR_SPEED 200
+#define MOTOR_SPEED 100
+#define ROTATION_TIME_PER_DEGREE 5
 
 void setup()
 {
@@ -117,11 +117,11 @@ void initMotor()
     pinMode(LEFT_SPEED_PIN, OUTPUT);
     pinMode(LEFT_DIR_PIN1, OUTPUT);
     pinMode(LEFT_DIR_PIN2, OUTPUT);
-    
+
     pinMode(RIGHT_SPEED_PIN, OUTPUT);
     pinMode(RIGHT_DIR_PIN1, OUTPUT);
     pinMode(RIGHT_DIR_PIN2, OUTPUT);
-    
+
     pinMode(STBY_PIN, OUTPUT);
 
     // Set initial value of each pin
@@ -234,7 +234,8 @@ int findMaxIdx()
         }
     }
 
-    if(DEBUG){
+    if (DEBUG)
+    {
         Serial.print("Max distance at index ");
         Serial.print(maxIdx);
         Serial.print(" (");
@@ -261,14 +262,14 @@ void getAroundDist()
     commonDelay();
 }
 
-
-void stopMotor(){
-    analogWrite(LEFT_PWM, 0);
-    analogWrite(RIGHT_PWM, 0);
-    digitalWrite(LEFT_IN1, LOW);
-    digitalWrite(LEFT_IN2, LOW);
-    digitalWrite(RIGHT_IN1, LOW);
-    digitalWrite(RIGHT_IN2, LOW);
+void stopMotor()
+{
+    analogWrite(LEFT_SPEED_PIN, 0);
+    analogWrite(RIGHT_SPEED_PIN, 0);
+    digitalWrite(LEFT_DIR_PIN1, LOW);
+    digitalWrite(LEFT_DIR_PIN2, LOW);
+    digitalWrite(RIGHT_DIR_PIN1, LOW);
+    digitalWrite(RIGHT_DIR_PIN2, LOW);
 }
 /*
     Rotate the robot according to the angleIdx
@@ -282,7 +283,8 @@ void rotation(int angleIdx)
         desiredAngle -= 360;
     }
     int rotationTime = abs(desiredAngle) * ROTATION_TIME_PER_DEGREE;
-    if(DEBUG){
+    if (DEBUG)
+    {
         Serial.print("Rotating by ");
         Serial.print(desiredAngle);
         Serial.print(" degrees (time: ");
@@ -290,7 +292,6 @@ void rotation(int angleIdx)
         Serial.println(" ms)");
     }
 
-    
     if (desiredAngle > 0)
     {
         // clockwise, left forward / right backward
@@ -328,14 +329,14 @@ void rotation(int angleIdx)
 */
 void moveForward(int time)
 {
-    // moving forward    
-    digitalWrite(LEFT_IN1, HIGH);
-    digitalWrite(LEFT_IN2, LOW);
-    analogWrite(LEFT_PWM, MOTOR_SPEED);
+    // moving forward
+    digitalWrite(LEFT_DIR_PIN1, HIGH);
+    digitalWrite(LEFT_DIR_PIN2, LOW);
+    analogWrite(LEFT_SPEED_PIN, MOTOR_SPEED);
 
-    digitalWrite(RIGHT_IN1, HIGH);
-    digitalWrite(RIGHT_IN2, LOW);
-    analogWrite(RIGHT_PWM, MOTOR_SPEED);
+    digitalWrite(RIGHT_DIR_PIN1, HIGH);
+    digitalWrite(RIGHT_DIR_PIN2, LOW);
+    analogWrite(RIGHT_SPEED_PIN, MOTOR_SPEED);
 
     delay(time);
 
@@ -346,7 +347,7 @@ void moveForward(int time)
 void loop()
 {
     getAroundDist();
-    Rotation(findMaxIdx());
+    rotation(findMaxIdx());
     // baseServo.write(BASE_INIT_ANGLE);
     commonDelay();
 
